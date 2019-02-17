@@ -133,7 +133,27 @@ ruleTester.run("prefer-destructuring", rule, {
         },
         "class Foo extends Bar { static foo() {var foo = super.foo} }",
         "foo = bar[foo];",
-        "var foo = bar[foo];"
+        "var foo = bar[foo];",
+        {
+            code: "[fizz] = array[0];",
+            options: [{ array: true }, { enforceForLastMemberOnly: true }]
+        },
+        {
+            code: "[fizz] = this[0];",
+            options: [{ array: true }, { ignoreThisTerm: true }]
+        },
+        {
+            code: "var { fizz } = object.bar.baz;",
+            options: [{ VariableDeclarator: { object: true } }, { enforceForLastMemberOnly: true }]
+        },
+        {
+            code: "var { baz: fizz } = object.bar;",
+            options: [{ VariableDeclarator: { object: true } }, { enforceForLastMemberOnly: true }]
+        },
+        {
+            code: "var { fizz } = this.bar;",
+            options: [{ VariableDeclarator: { object: true } }, { ignoreThisTerm: true }]
+        }
     ],
 
     invalid: [
